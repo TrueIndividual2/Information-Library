@@ -1,0 +1,156 @@
+ _   _ ____  ____     ____       _     _      
+| | | / ___|| __ )   / ___|_   _(_) __| | ___ 
+| | | \___ \|  _ \  | |  _| | | | |/ _` |/ _ \
+| |_| |___) | |_) | | |_| | |_| | | (_| |  __/
+ \___/|____/|____/   \____|\__,_|_|\__,_|\___|
+========================================================================================================================
+
+@author   Sami Somero <sssomero@gmail.com>
+@date     07.05.2019
+@revision 1.0
+@license    Published under Creative Commons License Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)
+            You are free:
+                to Share — to copy, distribute and transmit the work
+                to Remix — to adapt the work
+            Under the following conditions:
+                Attribution   — You must attribute the work in the manner specified by the author or licensor (but not
+                                in any way that suggests that they endorse you or your use of the work).
+                Noncommercial — You may not use this work for commercial purposes.
+                Share Alike   — If you alter, transform, or build upon this work, you may distribute the resulting work
+                                only under the same or similar license to this one.
+            With the understanding that:
+                Waiver        — Any of the above conditions can be waived if you get permission from the copyright
+                                holder.
+                Public Domain — Where the work or any of its elements is in the public domain under applicable law, that
+                                status is in no way affected by the license.
+            Other Rights      — In no way are any of the following rights affected by the license:
+                                * Your fair dealing or fair use rights, or other applicable copyright exceptions and
+                                  limitations;
+                                * The author's moral rights;
+                                * Rights other persons may have either in the work itself or in how the work is used,
+                                  such as publicity or privacy rights.
+            Notice            — For any reuse or distribution, you must make clear to others the license terms of this
+                                work.
+            For details and the full license text, see http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+========================================================================================================================
+Contents
+========================================================================================================================
+
+1.  Basics and history of USB
+2.  USB Cheatsheet
+2.1  General
+2.2  USB Generations
+2.3  Cable Types
+3.  USB OTG
+4.  Sources
+
+========================================================================================================================
+1. Basics and history of USB
+========================================================================================================================
+
+USB stands for "Universal Serial Bus" and is a bus architechture that uses slave / host model to provide access to USB
+peripherals like mouse, printer etc.
+
+USB is a superseder for Serial port, PS/2 port and IEEE 1394 (Fireware) just to mention couple.
+
+USB architechture standard was designed by Microsoft, Compaq, DEC, IBM, Intel, NEC and Nortel. Initially released at
+January 1996, USB has gained popularity to become industry standard at the moment of writing this. Continuous
+development gives us faster USB Buses, USB Hubs, more power and speed in general. It might get a little bit confusing
+what all these USB versions are. By the time of writing this, USB has reached version 3.2 from 1.0 and USB4 is expected
+to be released in mid 2019.
+
+USB devices are also hot pluggable so you don't need to restart your USB Host (Computer for example) device when you
+attach an USB peripheral to USB port.
+
+========================================================================================================================
+2. USB Cheatsheet
+========================================================================================================================
+
+2.1 General
+------------------------------------------------------------------------------------------------------------------------
+
+USB Bus allows seven cascading tiers of ports where root Hub (discussed more below) is the first tier and the last
+devices are at the seventh tier. This allows 5 tiers of USB Hubs in between them. If you attach an USB Hub to another
+USB Hub, it uses one device slot. So with 5 USB Hubs attached and 127 maximum devices can be attached per one USB Bus,
+we can have: 127 - 5 = 122 devices.
+
+An USB Hub is a device that expands a single USB port to several ports to connect devices. Data transfer speed is still
+same as used standard (ie. 480 Mb/s with USB 2.0) only divided to all devices connected to USB Hub. Most common USB Hubs
+have 4 USB ports but 16 USB port hubs also exist, especially in industry.
+
+USB Hub type can be either Single-TT (Transaction Translator) or Multi-TT. Your device actually communicates with the
+Transaction Translator in the USB hub. With Single-TT USB hub with two attached devices, other device might need to wait
+for first device data to be transferred before it can make its own request for data transfer. So in worst case scenario,
+you might end up waiting for first device a while until second device can transfer data.
+
+Multi-TT USB Hub on the other hand, can handle all devices data transfer requests at the same time and adjusts the
+speed of data transfer to device according to need of the device and used USB bus data rate. 
+
+Cable limit                        5m (practical maximum length: 3m)
+Maximum number of slaves per bus   127 devices (minus one device per USB Hub)
+Signal                             5V DC
+Power                              Host controller (USB Hub) powers slave devices through USB port by sharing whatever
+                                   power it can put out. This can lead to situations where getting an USB Hub with
+                                   external power cable (for USB Hard Drives or other power consuming devices) is a good
+                                   solution.
+
+                                   USB's electric current is allocated in 100mA units up to a total of 500mA per port
+                                   which means you can have maximum of 4 ports outputting 100mA and USB Hub itself uses
+                                   100mA. This restriction was raised with release of USB 3.0 to 150mA per port to 
+                                   maximum of 6 units: 6 * 150mA = 900mA.
+
+                                   By using external power source, USB Hub can provide full 500mA / 900mA per port
+                                   (depending USB version, how many and what kind of devices are connected and power
+                                   supply)
+
+
+2.2 USB Generations
+------------------------------------------------------------------------------------------------------------------------
+
+Version - Released  | Data Rate                                  | Connector: standard/mini/micro | Port load/V/W
+-------------------  -----------                                   -------------------------------  -------------------
+USB 1.0 - 1996 Jan  | 1.5 Mb/s (Low Speed), 12 Mb/s (Full Speed) | Type [A/B]/[N/A]/[N/A]          | 100mA / 5V / 0.50W
+USB 1.1 - 1998 Aug  |  12 Mb/s (Full Speed)                      | Type [A/B]/[N/A]/[N/A]          | 100mA / 5v / 0.50W
+USB 2.0 - 2000 Apr  | 480 Mb/s (High Speed)                      | Type [A/B]/[A/B/AB]/[A/B/AB]    | 100mA / 5V / 2.50W
+USB 3.0 - 2008 Nov  |   5 Gb/s (Super Speed)                     | Type [A/B]/[N/A]/[B Super Speed]| 150mA / 5V / 4.50W
+USB 3.1 - 2013 Jul  |  10 Gb/s (Super Speed+)                    | Type [A/B/C]/[N/A]/[N/A]        | 150mA / 5V / 4.50W
+USB 3.2 - 2017 Sep  |  20 Gb/s (Super Speed+)                    | Type [C]/[N/A]/[N/A]            | 150mA / 5V / 4.50W
+USB 4.0 - TBA       |  40 Gb/s (Super Speed+ and Thunderbolt 3)  | Type [C]/[N/A]/[N/A]            | TBA   /TBA /TBA
+
+
+2.3 Cable Types
+------------------------------------------------------------------------------------------------------------------------
+
+Below Super Speed category: 4 wires plus shield
+Super Speed and above:      9 wires plus shield
+
+Pins:
+4  - 1 power, 2 data, 1 ground
+5  - On-The-Go
+9  - SuperSpeed
+11 - Powered-B SuperSpeed
+24 - USB-C
+
+========================================================================================================================
+3. USB OTG
+========================================================================================================================
+
+USB On-The-Go is a specification first used in late 2001 that allows devices to change host / slave role dynamically.
+Whenever two USB devices are connected and one of them is USB OTG device, they establish a communication link. Device
+controlling the link takes a role of master (OTG-A device) while other device takes role of slave (OTG-B device). The 
+master or OTG-A will provide power to OTG-B device.
+
+Because USB OTG is direct link with two USB OTG devices, standard USB Hub cannot be used. There are different USB Hubs
+for USB OTG devices but attention must be used when purchasing.  
+
+USB OTG cables have variety of different connectors, mainly for smartphones and tabs. With USB OTG cable you can attach
+any USB device to your smartphone or tab which is main usage of this specification. You could even attach two phones 
+together and charge other phone with other. Only sky is the limit ;)
+
+========================================================================================================================
+4. Sources
+========================================================================================================================
+
+https://www.usb.org
+https://en.wikipedia.org/wiki/USB
