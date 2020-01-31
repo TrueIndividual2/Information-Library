@@ -1,0 +1,54 @@
+TomatoUSB
+==========
+@author Sami Somero <ssomero@gmail.com>
+@date 29.01.2018
+@revision 0.1
+
+=== Contents ===
+Introduction
+Installation
+Post-Installation
+SSH Access
+
+=== Introduction ===
+TomatoUSB is an alternative Linux-based firmware for powering Broadcom-based ethernet routers. It is a modification of the famous Tomato firmware, 
+with additional built-in support for USB port, wireless-N mode support, support for several newer router models, and various enhancements.
+
+Through this memo, we will be using Asus RT-N12 D1 -model router so all information in this memo has been tested with that specific router model.
+
+=== Installation ===
+Set your wired network to same ip address space ie. change your wireless adapter settings to have manual ip address and subnet:
+Ip: 192.168.1.2
+Subnet: 255.255.255.0
+
+[intalling firmware]
+
+=== Post-Installation ===
+Access your router via web interface (192.169.1.1), go to Administration -> Configuration -> Restore Default Configuration. Select "Erase all data NVRAM 
+memory (thorough)" and click OK.
+
+If you manage to mess around with the web interface and make it unaccessable, you should take a backup of NVRAM settings. With web interface, go to:
+Administration -> Configuration -> Backup Configuration, choose filename and click Backup. Good practice is to transfer this file to routers persistent
+data directory (/jffs) via ssh. So login with ssh and use secure copy to get file from your computer to router.
+Example: scp username@computer:/remote_dir/filename /jffs
+
+=== SSH Access ===
+SSH access with default password "admin". SSH access username is allways root!
+Usage: ssh root@192.168.1.1
+
+=== Directory structure ===
+Basic linux directory structure with couple of differences:
+/jffs - Store any kind of persistent data. If you write something to standard filesystem (eg: /root), the changes will not persist after a router reboot.
+
+=== Installing Package Manager ===
+First obtain Optware for TomatoUSB, this comes with a package manager called ipkg.
+
+=== Terminology ===
+JFFS    - Journaling Flash File System, log-structured file system for use on NOR flash memory devices on the Linux operating system
+Optware - Distribution of packages that are suitable for installation within small embedded systems, just like the routers on which TomatoUSB runs. 
+          Optware uses the ipkg package manager. It is equivalent to the package manager tools usually available on desktop Linux systems such as apt, 
+		  yum or yast. Optware packages are distributed as .ipk files (so standard .deb or .rpm files cannot be used).
+		  
+
+=== Notes ===
+* Basic -> Static DHCP/ARP/IPT -> Options -> Ignore DHCP requests from unknow devices

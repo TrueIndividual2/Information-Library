@@ -1,0 +1,217 @@
+  ____ _ _     _         _             _       _    __              _                _
+ / ___(_) |_  | |_ _   _| |_ ___  _ __(_) __ _| |  / _| ___  _ __  | |__   ___  __ _(_)_ __  _ __   ___ _ __ ___
+| |  _| | __| | __| | | | __/ _ \| '__| |/ _` | | | |_ / _ \| '__| | '_ \ / _ \/ _` | | '_ \| '_ \ / _ \ '__/ __|
+| |_| | | |_  | |_| |_| | || (_) | |  | | (_| | | |  _| (_) | |    | |_) |  __/ (_| | | | | | | | |  __/ |  \__ \
+ \____|_|\__|  \__|\__,_|\__\___/|_|  |_|\__,_|_| |_|  \___/|_|    |_.__/ \___|\__, |_|_| |_|_| |_|\___|_|  |___/
+                                                                               |___/
+========================================================================================================================
+
+@author     Sami Somero <sssomero@gmail.com>
+@date       02.09.2019
+@revision   1.0
+@license    Published under Creative Commons License Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)
+            You are free:
+                to Share — to copy, distribute and transmit the work
+                to Remix — to adapt the work
+            Under the following conditions:
+                Attribution   — You must attribute the work in the manner specified by the author or licensor (but not
+                                in any way that suggests that they endorse you or your use of the work).
+                Noncommercial — You may not use this work for commercial purposes.
+                Share Alike   — If you alter, transform, or build upon this work, you may distribute the resulting work
+                                only under the same or similar license to this one.
+            With the understanding that:
+                Waiver        — Any of the above conditions can be waived if you get permission from the copyright
+                                holder.
+                Public Domain — Where the work or any of its elements is in the public domain under applicable law, that
+                                status is in no way affected by the license.
+            Other Rights      — In no way are any of the following rights affected by the license:
+                                * Your fair dealing or fair use rights, or other applicable copyright exceptions and
+                                  limitations;
+                                * The author's moral rights;
+                                * Rights other persons may have either in the work itself or in how the work is used,
+                                  such as publicity or privacy rights.
+            Notice            — For any reuse or distribution, you must make clear to others the license terms of this
+                                work.
+            For details and the full license text, see http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+========================================================================================================================
+
+Contents
+========================================================================================================================
+
+1..................Introduction to Git
+1.1.................... Git principles
+
+2.......................Installing Git
+2.1............Creating Git repository
+2.2..................Git configuration
+
+3. Git repositories (create or clone)
+3.1 Basic commands
+
+
+
+1. Introduction to Git
+========================================================================================================================
+
+Git is a Distributed Version Control System (DVCS) created by Linus Torvalds in 2005 for development of Linux
+Kernel. Git is released under GNU General Public License Version 2.0, which is an open source license which in
+layman's terms means free program. Version control systems (VCS) are designed for coordinating work amongst programmers.
+Difference between VCS and DVCS is that with DVCS you don't need to communicate with one central server but instead
+every team participant has their own copy of the whole project and can continue working even offline. When they get
+online again, team participants can update their local copy of the project and add their contributions.
+
+Git has been released to Mac OS X, Windows, Linux, Android and iOS operating systems and has graphical user interface
+versions also. GUI versions of Git usually miss some abilities that you can do with command line/terminal, so knowing
+Git commands in command line/terminal gives you better understanding with GUI versions.
+
+There are many other version control systems but Git uses branching model which makes it stand out nearly every
+other (VCS) programs.
+
+By the writing of this, latest source version of Git is 2.23 which was released in 16.08.2019. This tutorial
+concentrates to this version Debian derivate Operating Systems and command line version.
+
+
+1.1 Git principles
+-------------------
+
+Git works by creating a repository which is a database consisting of project files list and changes made to those files.
+You can imagine repository as it's own file system which resides inside project directory on it's own .git directory.
+After initial creation (either creating new repository or cloning it) Git takes snapshots of all changes made to project
+instead of overwriting original files. Git does this by using SHA-1 checksums for each project file.
+
+Git uses three stage system to track project files:
+
+* Modified         - File is modified but not yet staged
+* Staged (indexed) - File is added to stage area and is ready to be committed
+* Committed        - File changes are written to Git repository
+
+
+2. Installing Git
+========================================================================================================================
+
+You can use the following command on Debian terminal to get latest version of Git:
+
+$ sudo apt-get install git
+
+
+
+========================================================================================================================
+2. Terminology & Basic commands
+========================================================================================================================
+
+
+2.1 Creating Git repository
+------------------------------------------------------------------------------
+
+This guideline will help you create your own local project. First you need to decide directory where your project
+resides and is not yet controlled by Git and change to that directory.
+
+Run following command which creates a .git subdirectory with Git repository skeleton files under your project directory:
+
+$ git init
+
+You should get reply from Git: "Initialized empty Git repository in [project_dir]/.git/" and repository has been
+created.
+
+Next you can add files to your Git repository. We are going to add your chosen projects directory files by using "add"
+command:
+
+$ git add .
+
+Above command will take a snapshot of all files under the current directory and adds them to a temporary staging area
+which in Git terms is called "index". Finally store permanently the contents of the index with following command:
+
+$ git commit
+
+Git will reply with a message. You have now created your first repository which holds your project!
+
+
+2.2 Git configuration
+----------------------
+
+It is a good practice to introduce yourself to Git with your name and public e-mail address for your projects. If you
+don't have any projects yet, create a repository first to your project and then run following commands:
+
+$ git config user.name  [your_username]
+$ git config user.email [mailbox@mydomain.com]
+
+You can always use syntax: "git help [command]" or use git man pages to see documentation for commands.
+
+
+2.3 Basic commands
+-------------------
+
+Adding files to repository:
+
+Navigate to your project directory . Then add some files to repository using command:
+
+$ git add file1 file2 file3...
+
+You are now ready to commit (add) changes to your current repository. You can check what changes are about to be done
+by using command:
+
+$ git diff --cached
+
+Without --cached parameter, diff will show you any changes you have made but not yet added to index. You can also see
+short summary of the situation with command:
+
+$ git status
+
+And finally to commit your new changes, use same command:
+
+$ git commit
+
+This will ask you to describe what changes has been made to project. First line is commit message which is also used for
+e-mail topic (more of this later) so it should be descriptive and short.
+
+
+========================================================================================================================
+Commands with usefull arguments and options
+========================================================================================================================
+Example syntax:
+
+$ git status -v
+
+Above example will use "status" argument with option "-v" which will output status of the working tree in verbose mode
+because of the "-v" option.
+
+Arguments:
+------------------------------------------------------------------------------------------------------------------------
+rm [file] - Remove file from branch
+$ git status    - Shows changes that can be committed
+$ git commit    - Add changes to current branch
+$ git branch [branch_name] - Create new branch
+$ git branch    - Shows list of all branches, asterisk (*) show currently selected branch
+$ git checkout [branch_name] - Switch to desired branch
+$ git merge [branch_name] - Merge current branch with other branch
+$ git branch -d [branch_name] - Delete branch
+$ git log       - Shows commit logs
+git clone [url] - Copies whole Git project that server has
+
+Terminology
+------------------------------------------------------------------------------------------------------------------------
+Branch       -
+Commit       - Add changes that you have made to current branch
+Index        - Synonym of Staging or cache
+Repository   -
+Snapshot     - Current status of your work   ???that you are ready to commit
+Staging      - Synonym of Cache or Index
+
+
+Tracked and untracked status for file. Tracked files are files that were in the last Snapshot or files that Git is
+aware of.
+
+.gitignore uses Glob patterns. One per line?
+
+
+
+SCM - Source Control Management
+
+
+========================================================================================================================
+========================================================================================================================
+Your local repository consists of three "trees" maintained by Git.
+1) Working Directory
+2) Index (Stage)
+3) Head (Points to last made commit)

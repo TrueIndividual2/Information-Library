@@ -1,0 +1,18 @@
+Crack Lost Windows 7 Password
+==============================
+1. Create Windows 7 installation disc
+2. Boot from installation disc
+3. Click "Repair Computer" and select currently installed windows from list and proceed
+4. Open command prompt
+5. Type following commands:
+C:\
+cd Windows\System32
+ren utilman.exe utilman.exe.bak
+copy cmd.exe utilman.exe
+6. Remove installation disc and boot to windows normally
+7. Use keyboard shortcut to access the command prompt: Windows+U
+8. To change password for a user, use command: net user [username] [password]
+9. Revert changes back if you need Accessibility Center:
+cd Windows\System32
+del utilman.exe
+ren utilman.exe.bak utilman.exe

@@ -1,0 +1,214 @@
+Wordpress Plugin And Widget Creation Tutorial
+========================================================================================================================
+
+@author     Sami Somero <ssomero@gmail.com>
+@date       16.11.2018
+@revision   0.2
+@license    Published under Creative Commons License Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)
+            You are free:
+                to Share — to copy, distribute and transmit the work
+                to Remix — to adapt the work
+            Under the following conditions:
+                Attribution   — You must attribute the work in the manner specified by the author or licensor (but not
+                                in any way that suggests that they endorse you or your use of the work).
+                Noncommercial — You may not use this work for commercial purposes.
+                Share Alike   — If you alter, transform, or build upon this work, you may distribute the resulting work
+                                only under the same or similar license to this one.
+            With the understanding that:
+                Waiver        — Any of the above conditions can be waived if you get permission from the copyright
+                                holder.
+                Public Domain — Where the work or any of its elements is in the public domain under applicable law, that
+                                status is in no way affected by the license.
+            Other Rights      — In no way are any of the following rights affected by the license:
+                                * Your fair dealing or fair use rights, or other applicable copyright exceptions and
+                                  limitations;
+                                * The author's moral rights;
+                                * Rights other persons may have either in the work itself or in how the work is used,
+                                  such as publicity or privacy rights.
+            Notice            — For any reuse or distribution, you must make clear to others the license terms of this
+                                work.
+            For details and the full license text, see http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+========================================================================================================================
+
+=== Contents ===
+1. Introduction
+2. Creating plugin PHP template file
+3. Directory structure
+4. Widget
+5. References
+
+
+=================================================
+=== 1. Introduction                           ===
+=================================================
+
+Requirements: Understanding basic functionality about Wordpress. PHP skills as plugins are written with PHP.
+
+* Plugin name must be unique
+* Plugin update check is automatic
+* use plugin_dir_path() and plugins_url() for absolute paths and URLs
+* use: defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // as a first line in plugin.php
+* Readme file is optional and required only if you host your plugin in wordpress.org/plugins/
+* Homepage should describe all the plugin information
+* Main plugin file must have standardised comment section at the beginning of file
+* Basic hooks needed:
+    register_activation_hook()
+        Run when you activate plugin
+    register_deactivation_hook()
+        Run when you deactivate plugin
+    register_uninstall_hook()
+        Run when you uninstall plugin
+* Lisenssinä GPLv2
+* By default, WordPress uses global namespace so they suggest using prefix with names of variables/functions and classes to avoid other plugins
+  to accidentally overwrite your variable or call your function. WordPress also encourages use of PHP functions: function_exists(),
+  class_exists(), isset() and defined().
+
+  Example:
+  if(!function_exists('my_function')) {
+    function my_function() {
+      echo 'FooBar';
+    }
+  }
+
+* if(is_admin()) {
+    // We are in admin mode
+}
+
+* WordPress uses term "boilerplate" to define Skeleton for Plugins
+
+=================================================
+=== Creating plugin PHP template file         ===
+=================================================
+
+First create header comment at top of PHP file so that WordPress understands that it is a plugin. Minimum requirement for this is
+"Plugin Name" which is displayed in the WordPress backend in Plugins list. You can also add other WordPress standardized information:
+
+* Plugin URI
+    The home page of the plugin
+* Description
+    Description about plugin. Will be displayed at the WordPress admin panel Plugins section. NOTE: Keep below 140 characters
+* Version
+    Plugin version number. NOTE: WordPress uses PHP version_compare() -function to compare version numbers. 1.02 is actually greater
+    then 1.1
+* Author
+    Name of the plugin author. Multiple authors may be listed using commas.
+* Author URI
+    Authors website
+* License
+    Slug of plugins license
+* License URI
+    URI for full text of the license
+* Text Domain
+    The gettext text domain of the plugin. More about internationalizing [Ref. chapter: 5]
+* Domain Path
+    Domain path let WordPress know where to find the translations.
+* Network
+    Whether the plugin can only be activated network-wide. Can only be set to "true" and should be left out when not needed
+
+So to put it all together:
+
+my-plugin.php:
+<?php
+/*
+Plugin Name:  Awesome plugin to fill screen with FooBar text
+Description:  Exercise
+Version:      1.0
+Author:       Sami Somero
+Author URI:   www.donthavedomain.com
+License:      GPLv2
+License URI:  https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  wporg
+Domain Path:  /languages
+Network:      yes
+*/
+?>
+
+
+class MyClass extend WP_Widget
+
+
+-----------------------------------
+Adding css and javascript files
+-----------------------------------
+
+// Register and load the widget
+function SCCWidget_load() {
+    register_widget('SCCWidget');
+}
+
+add_action('widgets_init', 'SCCWidget_load');
+
+function SCC_Init() {
+    wp_register_script('settings', plugins_url('/js/widget-settings.js', __FILE__), array('jquery'), 1.0);
+    wp_enqueue_script('settings');
+//  wp_enqueue_style('cr-converter-widgets', plugins_url('/assets/css/cr-currency-widgets.css', __FILE__));
+//  wp_enqueue_style('cr-converter-flags', plugins_url('/assets/css/cr-currency-flags.css', __FILE__));
+
+//  wp_register_script( 'cr-converter-core', plugins_url('/assets/js/cr-currency-converter-core.js', __FILE__), array());
+//  wp_enqueue_script( 'cr-converter-core' );
+}
+add_action('init', 'SCC_Init');
+
+
+=================================================
+=== 3. Directory structure                    ===
+=================================================
+
+There is no common directory structure for plugins?
+
+
+=================================================
+=== 4. Widget                                 ===
+=================================================
+
+To create widget, you create class that extends WP_Widget class and some of its functions. Required functions are:
+
+__construct()
+    Must make a call to parent constructor with following arguments: Base ID, Name and array of arguments. Example:
+
+    parent::__construct('my_class', 'Widget Title', array('description' => 'My Widget'));
+
+public function widget($args, $instance)
+    Front end display of widget.
+    @param array $args     - Widget arguments
+    @param array $instance - Saved values from database
+
+
+public function form($instance)
+    Backend widget form
+    @param array $instance - Saved values from database
+
+public function update($new_instance, $old_instance)
+    Processing widget options on save
+    @param array $new_instance - New options to save
+    @param array $old_instance - Previous options
+    @return array
+
+After that you register widget using the widgets_init hook:
+    add_action('widgets_init', function() {
+        register_widget('My_Widget');
+    });
+
+
+For update to save settings, you must use _both_ functions to generate form element name and id:
+
+get_field_name($field_name)
+    @param string $field_name - Required. Form element name
+    @return string - Name attribute for $field_name
+
+get_field_id($field_name)
+    @param string $field_name - Required. Form element id
+    @return string - ID attribute for $field_name
+
+Example usage:
+    echo '<div id="' . get_field_id('myDiv') . ' name="' . get_field_name('divName') . '">';
+
+=================================================
+=== 5. References                             ===
+=================================================
+
+Widgets API
+    [https://codex.wordpress.org/Widgets_API]
+Plugin API
+    [https://codex.wordpress.org/Plugin_API]
